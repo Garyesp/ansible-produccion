@@ -1,10 +1,15 @@
+---
 - name: Reload systemd
   command: systemctl daemon-reload
   become: yes
+  listen: "restart myapp"  # Opcional: agrupa handlers
 
 - name: Restart myapp
   systemd:
     name: myapp
     state: restarted
+    daemon_reload: yes      # Recarga systemd ANTES de reiniciar
+    enabled: yes           # Asegura que está habilitado
+    force_restart: yes     # Fuerza reinicio aunque no haya cambios
   become: yes
-
+  listen: "restart myapp"  # Opcional
